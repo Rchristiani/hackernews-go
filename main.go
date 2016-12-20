@@ -7,7 +7,9 @@ import (
 	"net/http"
 	"strings"
 	"os/exec"
+	"os"
 	"gopkg.in/dixonwille/wmenu.v2"
+	"strconv"
 )
 
 type Story struct {
@@ -30,6 +32,17 @@ func getStory(id string) (*Story, error) {
 }
 
 func main() {
+
+	args := os.Args
+
+	var storyNumbers int
+
+	if  len(args) < 2 {
+		storyNumbers = 3
+	} else {
+		storyNumbers, _ = strconv.Atoi(args[1])
+	}
+
 	menu := wmenu.NewMenu("Which story would you like to read?")
 
 	fmt.Println("💻  Hacker News 💻 ")
@@ -44,7 +57,7 @@ func main() {
 
 	ids := strings.Split(idString[1:len(idString)-1], ",")
 
-	for i := 0; i < 3; i++ {
+	for i := 0; i < storyNumbers; i++ {
 		topStory, topStoryErr := getStory(ids[i])
 		if topStoryErr != nil {
 			fmt.Println(topStoryErr)
